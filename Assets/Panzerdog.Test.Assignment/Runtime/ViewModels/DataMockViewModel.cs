@@ -37,17 +37,10 @@ namespace Panzerdog.Test.Assignment.ViewModels
 #endif
         private readonly MatchController _matchController;
         
-        public ReactiveProperty<SaveData> SaveData { get; set; } = new(new SaveData()
-        {
-            Experience = new ScoreAndLevelData()
-            {
-                Level = 1,
-                Score = 10
-            }
-        });
-        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> RatingChangeData { get; set; } = new();
-        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; set; } = new();
-        public ReactiveProperty<MatchResult> MatchResult { get; set; } = new();
+        public ReactiveProperty<SaveData> SaveData { get; } = new(new SaveData());
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> RatingChangeData { get; } = new();
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; } = new();
+        public ReactiveProperty<MatchResult> MatchResult { get; } = new();
         
         public DataMockViewModel(MatchController matchController)
         {
