@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.Data
 {
-    //TODO: вынести куда-то нормально
     [CreateAssetMenu(fileName = "Score Thresholds", menuName = "Configs")]
     public class ScoreThresholds : ScriptableObject
     {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using Panzerdog.Test.Assignment.Services;
 using Panzerdog.Test.Assignment.Utils;
+using Panzerdog.Test.Assignment.ViewModels;
 using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.UI

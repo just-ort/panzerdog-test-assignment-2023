@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +17,6 @@ namespace Panzerdog.Test.Assignment.Services
         
         private Dictionary<Type, ScreenBase> _shownScreens = new(5);
 
-        //TODO: переделать
         public async Task<T> Show<T>(IViewModel viewModel, CancellationToken ct) where T : ScreenBase
         {
             var type = typeof(T);
@@ -50,10 +48,5 @@ namespace Panzerdog.Test.Assignment.Services
                 Debug.LogError($"Screen with type {screenType} isn't active now.");
             }
         }
-    }
-
-    //TODO: вынести в отдельный файл
-    public interface IViewModel
-    {
     }
 }
