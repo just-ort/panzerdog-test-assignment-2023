@@ -18,11 +18,7 @@ namespace Panzerdog.Test.Assignment
         private async void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            
             DOTween.Init(useSafeMode:true);
-            DOTween.defaultAutoPlay = AutoPlay.None;
-            DOTween.defaultAutoKill = false;
-
             await ProcessMatch(CancellationToken.None);
         }
 
