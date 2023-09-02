@@ -1,0 +1,21 @@
+{
+    "name": "Panzerdog.Test.Assignment",
+    "rootNamespace": "",
+    "references": [
+        "DOTween.Modules",
+        "ThirdParty",
+        "Unity.TextMeshPro",
+        "UniRx",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
