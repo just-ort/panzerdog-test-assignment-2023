@@ -24,12 +24,12 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
         private TaskQueue _taskQueue;
 
         private CancellationTokenSource _cancellationTokenSource;
-        private ReactiveDictionary<ScoreChangeData,List<DisplayState>> _displayStates;
+        private ReactiveDictionary<ScoreChangeData,List<ScoreChangeStepData>> _scoreChanges;
         
         public void Init(ScoreAndLevelData saveData, int threshold,
-            ReactiveDictionary<ScoreChangeData, List<DisplayState>> displayStates, TaskQueue taskQueue)
+            ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> scoreChanges, TaskQueue taskQueue)
         {
-            _displayStates = displayStates;
+            _scoreChanges = scoreChanges;
             _taskQueue = taskQueue;
             _cancellationTokenSource = new CancellationTokenSource();
             
@@ -43,7 +43,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
         {
             await _canvasGroup.DOFade(1, 1).Play(_cancellationTokenSource.Token).AsyncWaitForCompletion();
             
-            _displayStates.ObserveAdd().Subscribe(async x =>
+            _scoreChanges.ObserveAdd().Subscribe(async x =>
             {
                 await _taskQueue.Enqueue(() => OnScoreChanged(x));
             });
@@ -54,12 +54,12 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
             _cancellationTokenSource.Cancel();
         }
         
-        private async Task OnScoreChanged(DictionaryAddEvent<ScoreChangeData, List<DisplayState>> x)
+        private async Task OnScoreChanged(DictionaryAddEvent<ScoreChangeData, List<ScoreChangeStepData>> scoreChange)
         {
             var changeView = Instantiate(displayScoreChangeWidgetPrefab, _changesContainer);
-            _ = changeView.Show(x.Key, 1, _cancellationTokenSource.Token);
+            _ = changeView.Show(scoreChange.Key, 1, _cancellationTokenSource.Token);
 
-            foreach (var state in x.Value)
+            foreach (var state in scoreChange.Value)
             {
                 _progressBar.Setup(state.CurrentScore, state.MaxScore);
                 _levelText.SetText(state.Level.ToString());

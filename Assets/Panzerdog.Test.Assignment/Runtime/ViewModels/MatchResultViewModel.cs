@@ -15,8 +15,8 @@ namespace Panzerdog.Test.Assignment.ViewModels
         public ReactiveProperty<ScoreAndLevelData> RatingSavedData { get; }
         public ReactiveProperty<ScoreAndLevelData> ExperienceSavedData { get; }
         public ReactiveProperty<MatchResult> MatchResult { get; }
-        public ReactiveDictionary<ScoreChangeData, List<DisplayState>> RatingStates { get; private set; } = new();
-        public ReactiveDictionary<ScoreChangeData, List<DisplayState>> ExperienceStates { get; private set; } = new();
+        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> RatingScoreChanges { get; } = new();
+        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> ExperienceScoreChanges { get; } = new();
         
         public int CurrentExperienceThreshold => _experienceThresholds[ExperienceSavedData.Value.Level];
         public int CurrentRatingThreshold => _ratingThresholds[RatingSavedData.Value.Level];
@@ -48,26 +48,26 @@ namespace Panzerdog.Test.Assignment.ViewModels
 
         public void UpdateRatingSaveData()
         {
-            var ratingStates = CreateDisplayStates(RatingSavedData, _matchController.RatingChangeData, _ratingThresholds);
+            var ratingStates = GetChangeScoreSteps(RatingSavedData, _matchController.RatingChangeData, _ratingThresholds);
             foreach (var ratingState in ratingStates)
             {
-                RatingStates.Add(ratingState.Key, ratingState.Value);
+                RatingScoreChanges.Add(ratingState.Key, ratingState.Value);
             }
         }
         
         public void UpdateExperienceSaveData()
         {
-            var experienceStates = CreateDisplayStates(ExperienceSavedData, _matchController.ExperienceChangeData, _experienceThresholds);
+            var experienceStates = GetChangeScoreSteps(ExperienceSavedData, _matchController.ExperienceChangeData, _experienceThresholds);
             foreach (var experienceState in experienceStates)
             {
-                ExperienceStates.Add(experienceState.Key, experienceState.Value);
+                ExperienceScoreChanges.Add(experienceState.Key, experienceState.Value);
             }
         }
         
-        private static Dictionary<ScoreChangeData, List<DisplayState>> CreateDisplayStates(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ScoreChangeData> scoreChanges, IReadOnlyList<int> scoreThresholds)
+        private static Dictionary<ScoreChangeData, List<ScoreChangeStepData>> GetChangeScoreSteps(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ScoreChangeData> scoreChanges, IReadOnlyList<int> scoreThresholds)
         {
             var saveData = saveDataProperty.Value;
-            var result = new Dictionary<ScoreChangeData, List<DisplayState>>(scoreChanges.Count);
+            var result = new Dictionary<ScoreChangeData, List<ScoreChangeStepData>>(scoreChanges.Count);
 
             for (var i = 0; i < scoreChanges.Count; i++)
             {
@@ -78,7 +78,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
                     continue;
                 }
                 
-                var displayStates = new List<DisplayState>(1);
+                var changeScoreSteps = new List<ScoreChangeStepData>(1);
                 
                 while (true)
                 {
@@ -92,27 +92,27 @@ namespace Panzerdog.Test.Assignment.ViewModels
 
                     if (newScore >= currentThreshold)
                     {
-                        displayStates.AddRange(GetLevelUpChanges(ref saveData, ref scoreChange, scoreThresholds));
+                        changeScoreSteps.AddRange(GetLevelUpSteps(ref saveData, ref scoreChange, scoreThresholds));
                         
                         if (saveData.Level == scoreThresholds.Count - 1 && saveData.Score == scoreThresholds[saveData.Level])
                         {
-                            result.Add(scoreChanges[i], displayStates);
+                            result.Add(scoreChanges[i], changeScoreSteps);
                             return result;                     
                         }
                     }
                     else if (newScore <= 0)
                     {
-                        displayStates.AddRange(GetLevelDownChanges(ref saveData, ref scoreChange, scoreThresholds));
+                        changeScoreSteps.AddRange(GetLevelDownSteps(ref saveData, ref scoreChange, scoreThresholds));
                         
                         if (saveData.Level == 0 && saveData.Score == 0)
                         {
-                            result.Add(scoreChanges[i], displayStates);
+                            result.Add(scoreChanges[i], changeScoreSteps);
                             return result;
                         }                      
                     }
                     else
                     {
-                        displayStates.Add(new DisplayState()
+                        changeScoreSteps.Add(new ScoreChangeStepData()
                         {
                             CurrentScore = saveData.Score,
                             MaxScore = currentThreshold,
@@ -126,21 +126,21 @@ namespace Panzerdog.Test.Assignment.ViewModels
                     }
                 }
                 
-                result.Add(scoreChanges[i], displayStates);
+                result.Add(scoreChanges[i], changeScoreSteps);
             }
 
             saveDataProperty.Value = saveData;
             return result;
         }
 
-        private static IReadOnlyList<DisplayState> GetLevelUpChanges(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
+        private static IReadOnlyList<ScoreChangeStepData> GetLevelUpSteps(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
             IReadOnlyList<int> scoreThresholds)
         {
-            var displayStates = new List<DisplayState>(2);
+            var displayStates = new List<ScoreChangeStepData>(2);
             var currentThreshold = scoreThresholds[saveData.Level];
             var newScore = saveData.Score + scoreChange.Value;
 
-            displayStates.Add(new DisplayState()
+            displayStates.Add(new ScoreChangeStepData()
             {
                 CurrentScore = saveData.Score,
                 MaxScore = currentThreshold,
@@ -159,7 +159,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
 
             scoreChange.Value = newScore - currentThreshold;
 
-            displayStates.Add(new DisplayState()
+            displayStates.Add(new ScoreChangeStepData()
             {
                 CurrentScore = 0,
                 MaxScore = scoreThresholds[saveData.Level],
@@ -170,14 +170,14 @@ namespace Panzerdog.Test.Assignment.ViewModels
             return displayStates;
         }
         
-        private static IReadOnlyList<DisplayState> GetLevelDownChanges(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
+        private static IReadOnlyList<ScoreChangeStepData> GetLevelDownSteps(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
             IReadOnlyList<int> scoreThresholds)
         {
-            var displayStates = new List<DisplayState>(2);
+            var displayStates = new List<ScoreChangeStepData>(2);
             var currentThreshold = scoreThresholds[saveData.Level];
             var newScore = saveData.Score + scoreChange.Value;
             
-            displayStates.Add(new DisplayState()
+            displayStates.Add(new ScoreChangeStepData()
             {
                 CurrentScore = saveData.Score,
                 MaxScore = currentThreshold,
@@ -196,7 +196,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
                         
             scoreChange.Value = newScore;
 
-            displayStates.Add(new DisplayState()
+            displayStates.Add(new ScoreChangeStepData()
             {
                 CurrentScore = scoreThresholds[saveData.Level],
                 MaxScore = scoreThresholds[saveData.Level],

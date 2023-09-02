@@ -1,6 +1,6 @@
 ﻿namespace Panzerdog.Test.Assignment.Data
 {
-    public struct DisplayState
+    public struct ScoreChangeStepData
     {
         public int MaxScore { get; set; }
         public int CurrentScore { get; set; }

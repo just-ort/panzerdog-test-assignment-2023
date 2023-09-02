@@ -31,8 +31,8 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
             
             _viewModel.MatchResult.Subscribe(x => _matchResultText.SetText(x.ToString()));
             
-            _ratingWidget.Init(_viewModel.RatingSavedData.Value, _viewModel.CurrentRatingThreshold, _viewModel.RatingStates, _taskQueue);
-            _experienceWidget.Init(_viewModel.ExperienceSavedData.Value, _viewModel.CurrentExperienceThreshold, _viewModel.ExperienceStates, _taskQueue);
+            _ratingWidget.Init(_viewModel.RatingSavedData.Value, _viewModel.CurrentRatingThreshold, _viewModel.RatingScoreChanges, _taskQueue);
+            _experienceWidget.Init(_viewModel.ExperienceSavedData.Value, _viewModel.CurrentExperienceThreshold, _viewModel.ExperienceScoreChanges, _taskQueue);
             
             Observable.EveryUpdate().Subscribe(x =>
             {
