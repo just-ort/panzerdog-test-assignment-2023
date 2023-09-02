@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 6302725315300156206}
   - component: {fileID: 2044083162473616906}
   m_Layer: 5
-  m_Name: StatResultWidget
+  m_Name: DisplayScoreChangesWidget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -450,7 +450,7 @@ MonoBehaviour:
   _changesContainer: {fileID: 6302725315315930435}
   _progressBar: {fileID: 6302725314874489882}
   _levelText: {fileID: 656162806787492833}
-  displayScoreChangeWidgetPrefab: {fileID: 0}
+  displayScoreChangeWidgetPrefab: {fileID: 980904053627117055, guid: 6da7ad05bd12bb54f860ac1927af8674, type: 3}
 --- !u!225 &2044083162473616906
 CanvasGroup:
   m_ObjectHideFlags: 0

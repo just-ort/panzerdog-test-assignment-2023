@@ -15,11 +15,11 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
 
         [SerializeField] private CanvasGroup _canvasGroup;
         
-        public async Task Show(ChangeScoreData changeScoreData, float fadeDuration, CancellationToken ct)
+        public async Task Show(ScoreChangeData scoreChangeData, float fadeDuration, CancellationToken ct)
         {
             _canvasGroup.alpha = 0;
-            _reasonText.SetText(changeScoreData.Reason.ToString());
-            _valueText.SetText(changeScoreData.Value.ToString());
+            _reasonText.SetText(scoreChangeData.Reason.ToString());
+            _valueText.SetText(scoreChangeData.Value.ToString());
 
             await _canvasGroup.DOFade(1, fadeDuration).Play(ct).AsyncWaitForCompletion();
         }

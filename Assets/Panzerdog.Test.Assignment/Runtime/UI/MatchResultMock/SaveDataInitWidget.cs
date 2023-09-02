@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.UI.MatchResultMock
 {
-    public class SavedDataWidget : MonoBehaviour
+    public class SaveDataInitWidget : MonoBehaviour
     {
         private const string Zero = "0";
     

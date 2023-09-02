@@ -29,8 +29,8 @@ namespace Panzerdog.Test.Assignment.Services
 #endif
         
         public SaveData SaveData { get; set; }
-        public List<ChangeScoreData> RatingChangeData { get; } = new(4);
-        public List<ChangeScoreData> ExperienceChangeData { get; } = new(4);
+        public List<ScoreChangeData> RatingChangeData { get; } = new(4);
+        public List<ScoreChangeData> ExperienceChangeData { get; } = new(4);
         public MatchResult MatchResult { get; set; }
 
         public TaskCompletionSource<bool> OnMatchCompleted { get; } = new();

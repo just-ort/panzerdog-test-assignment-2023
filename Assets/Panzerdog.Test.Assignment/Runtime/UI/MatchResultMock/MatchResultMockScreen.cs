@@ -22,9 +22,9 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
         [SerializeField] private TMP_Dropdown _matchResultDropdown;
         [SerializeField] private Button _completeMatchButton;
 
-        [SerializeField] private SavedDataWidget _savedDataWidget;
-        [SerializeField] private ChangeScoreWidget _ratingChangeWidget;
-        [SerializeField] private ChangeScoreWidget _experienceChangeWidget;
+        [SerializeField] private SaveDataInitWidget _saveDataInitWidget;
+        [SerializeField] private ScoreChangesInitWidget _ratingChangesInitWidget;
+        [SerializeField] private ScoreChangesInitWidget _experienceChangesInitWidget;
 
         private DataMockViewModel _viewModel;
         
@@ -35,16 +35,16 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             InitMatchResultDropdown();
             _completeMatchButton.onClick.AddListener(_viewModel.CompleteMatch);
             
-            _savedDataWidget.Init(_viewModel.SaveData);
-            _ratingChangeWidget.Init(_viewModel.RatingChangeData);
-            _experienceChangeWidget.Init(_viewModel.ExperienceChangeData);
+            _saveDataInitWidget.Init(_viewModel.SaveData);
+            _ratingChangesInitWidget.Init(_viewModel.RatingChangeData);
+            _experienceChangesInitWidget.Init(_viewModel.ExperienceChangeData);
         }
 
         protected override void Dispose()
         {
-            _experienceChangeWidget.Dispose();
-            _ratingChangeWidget.Dispose();
-            _savedDataWidget.Dispose();
+            _experienceChangesInitWidget.Dispose();
+            _ratingChangesInitWidget.Dispose();
+            _saveDataInitWidget.Dispose();
             
             _completeMatchButton.onClick.RemoveAllListeners();
             DisposeMatchResultDropdown();

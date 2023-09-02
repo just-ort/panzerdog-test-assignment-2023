@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6311015029487007766}
   - component: {fileID: 6311015029487007765}
   m_Layer: 5
-  m_Name: ScoreChangeWidget
+  m_Name: ScoreChangesInitWidget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 650, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6311015029487007767
 CanvasRenderer:
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863c345f6dbd402d8984968c92cbc8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _changeScoreValueWidgets:
+  _enterChangeScoreValueWidget:
   - {fileID: 4005911042474042766}
   - {fileID: 7856325675024850098}
   - {fileID: 7856325675519269414}
@@ -447,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6525887718030058021, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
       propertyPath: m_Name
-      value: ChangeScoreValueWidget
+      value: EnterScoreChangeWidget_0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
@@ -632,7 +632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6525887718030058021, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
       propertyPath: m_Name
-      value: ChangeScoreValueWidget (2)
+      value: EnterScoreChangeWidget_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
@@ -817,7 +817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6525887718030058021, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
       propertyPath: m_Name
-      value: ChangeScoreValueWidget (1)
+      value: EnterScoreChangeWidget_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
@@ -1002,7 +1002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6525887718030058021, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}
       propertyPath: m_Name
-      value: ChangeScoreValueWidget (3)
+      value: EnterScoreChangeWidget_3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 704217a09ed998e45b9f5c7b741a88d5, type: 3}

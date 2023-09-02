@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.UI.MatchCompletion
 {
-    public class DisplayChangesWidget : MonoBehaviour
+    public class DisplayScoreChangesWidget : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Transform _changesContainer;
@@ -24,10 +24,10 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
         private TaskQueue _taskQueue;
 
         private CancellationTokenSource _cancellationTokenSource;
-        private ReactiveDictionary<ChangeScoreData,List<DisplayState>> _displayStates;
+        private ReactiveDictionary<ScoreChangeData,List<DisplayState>> _displayStates;
         
         public void Init(ScoreAndLevelData saveData, int threshold,
-            ReactiveDictionary<ChangeScoreData, List<DisplayState>> displayStates, TaskQueue taskQueue)
+            ReactiveDictionary<ScoreChangeData, List<DisplayState>> displayStates, TaskQueue taskQueue)
         {
             _displayStates = displayStates;
             _taskQueue = taskQueue;
@@ -54,7 +54,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
             _cancellationTokenSource.Cancel();
         }
         
-        private async Task OnScoreChanged(DictionaryAddEvent<ChangeScoreData, List<DisplayState>> x)
+        private async Task OnScoreChanged(DictionaryAddEvent<ScoreChangeData, List<DisplayState>> x)
         {
             var changeView = Instantiate(displayScoreChangeWidgetPrefab, _changesContainer);
             _ = changeView.Show(x.Key, 1, _cancellationTokenSource.Token);

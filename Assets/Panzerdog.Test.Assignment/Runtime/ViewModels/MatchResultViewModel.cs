@@ -15,8 +15,8 @@ namespace Panzerdog.Test.Assignment.ViewModels
         public ReactiveProperty<ScoreAndLevelData> RatingSavedData { get; }
         public ReactiveProperty<ScoreAndLevelData> ExperienceSavedData { get; }
         public ReactiveProperty<MatchResult> MatchResult { get; }
-        public ReactiveDictionary<ChangeScoreData, List<DisplayState>> RatingStates { get; private set; } = new();
-        public ReactiveDictionary<ChangeScoreData, List<DisplayState>> ExperienceStates { get; private set; } = new();
+        public ReactiveDictionary<ScoreChangeData, List<DisplayState>> RatingStates { get; private set; } = new();
+        public ReactiveDictionary<ScoreChangeData, List<DisplayState>> ExperienceStates { get; private set; } = new();
         
         public int CurrentExperienceThreshold => _experienceThresholds[ExperienceSavedData.Value.Level];
         public int CurrentRatingThreshold => _ratingThresholds[RatingSavedData.Value.Level];
@@ -64,10 +64,10 @@ namespace Panzerdog.Test.Assignment.ViewModels
             }
         }
         
-        private static Dictionary<ChangeScoreData, List<DisplayState>> CreateDisplayStates(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ChangeScoreData> scoreChanges, IReadOnlyList<int> scoreThresholds)
+        private static Dictionary<ScoreChangeData, List<DisplayState>> CreateDisplayStates(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ScoreChangeData> scoreChanges, IReadOnlyList<int> scoreThresholds)
         {
             var saveData = saveDataProperty.Value;
-            var result = new Dictionary<ChangeScoreData, List<DisplayState>>(scoreChanges.Count);
+            var result = new Dictionary<ScoreChangeData, List<DisplayState>>(scoreChanges.Count);
 
             for (var i = 0; i < scoreChanges.Count; i++)
             {
@@ -133,7 +133,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
             return result;
         }
 
-        private static IReadOnlyList<DisplayState> GetLevelUpChanges(ref ScoreAndLevelData saveData, ref ChangeScoreData scoreChange,
+        private static IReadOnlyList<DisplayState> GetLevelUpChanges(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
             IReadOnlyList<int> scoreThresholds)
         {
             var displayStates = new List<DisplayState>(2);
@@ -170,7 +170,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
             return displayStates;
         }
         
-        private static IReadOnlyList<DisplayState> GetLevelDownChanges(ref ScoreAndLevelData saveData, ref ChangeScoreData scoreChange,
+        private static IReadOnlyList<DisplayState> GetLevelDownChanges(ref ScoreAndLevelData saveData, ref ScoreChangeData scoreChange,
             IReadOnlyList<int> scoreThresholds)
         {
             var displayStates = new List<DisplayState>(2);

@@ -45,8 +45,8 @@ namespace Panzerdog.Test.Assignment.ViewModels
                 Score = 10
             }
         });
-        public ReactiveCollection<ReactiveProperty<ChangeScoreData>> RatingChangeData { get; set; } = new();
-        public ReactiveCollection<ReactiveProperty<ChangeScoreData>> ExperienceChangeData { get; set; } = new();
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> RatingChangeData { get; set; } = new();
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; set; } = new();
         public ReactiveProperty<MatchResult> MatchResult { get; set; } = new();
         
         public DataMockViewModel(MatchController matchController)
@@ -59,7 +59,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
             RatingChangeData.ObserveAdd().Subscribe(x =>
             {
                 _matchController.RatingChangeData.Insert(x.Index, x.Value.Value);
-                x.Value.Subscribe(y => _matchController.RatingChangeData[x.Index] = new ChangeScoreData(y));
+                x.Value.Subscribe(y => _matchController.RatingChangeData[x.Index] = new ScoreChangeData(y));
             });
             
             RatingChangeData.ObserveRemove().Subscribe(x =>
@@ -70,7 +70,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
             ExperienceChangeData.ObserveAdd().Subscribe(x =>
             {
                 _matchController.ExperienceChangeData.Insert(x.Index, x.Value.Value);
-                x.Value.Subscribe(y => _matchController.ExperienceChangeData[x.Index] = new ChangeScoreData(y));
+                x.Value.Subscribe(y => _matchController.ExperienceChangeData[x.Index] = new ScoreChangeData(y));
             });
             
             ExperienceChangeData.ObserveRemove().Subscribe(x =>

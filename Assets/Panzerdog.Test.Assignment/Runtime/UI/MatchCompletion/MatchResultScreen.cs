@@ -15,14 +15,14 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
     public class MatchResultScreen : ScreenBase
     {
         [SerializeField] private TMP_Text _matchResultText;
-        [SerializeField] private DisplayChangesWidget _ratingWidget;
-        [SerializeField] private DisplayChangesWidget _experienceWidget;
+        [SerializeField] private DisplayScoreChangesWidget _ratingWidget;
+        [SerializeField] private DisplayScoreChangesWidget _experienceWidget;
 
         private TaskQueue _taskQueue;
 
         private MatchResultViewModel _viewModel;
 
-        private DisplayChangesWidget _lastShownWidget;
+        private DisplayScoreChangesWidget _lastShownWidget;
         
         protected override void Init(IViewModel viewModel)
         {

@@ -3,12 +3,12 @@ using Panzerdog.Test.Assignment.Types;
 
 namespace Panzerdog.Test.Assignment.Data
 {
-    public struct ChangeScoreData
+    public struct ScoreChangeData
     {
         public ChangeScoreReason Reason { get; set; }
         public int Value { get; set; }
 
-        public ChangeScoreData(ChangeScoreData other)
+        public ScoreChangeData(ScoreChangeData other)
         {
             Reason = other.Reason;
             Value = other.Value;
@@ -21,7 +21,7 @@ namespace Panzerdog.Test.Assignment.Data
 
         public override bool Equals(object obj)
         {
-            if (obj is ChangeScoreData other)
+            if (obj is ScoreChangeData other)
             {
                 return Value == other.Value && Reason == other.Reason;
             }

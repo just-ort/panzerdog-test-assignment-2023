@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.UI.MatchResultMock
 {
-    public class ChangeScoreValueWidget : MonoBehaviour
+    public class EnterScoreChangeWidget : MonoBehaviour
     {
         private const string Zero = "0";
 
@@ -22,9 +22,9 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
         [SerializeField] private TMP_Dropdown _reasonDropdown;
         [SerializeField] private TMP_InputField _valueText;
 
-        private ReactiveProperty<ChangeScoreData> _changeScoreData;
+        private ReactiveProperty<ScoreChangeData> _changeScoreData;
         
-        public void Init(ReactiveProperty<ChangeScoreData> changeScoreData)
+        public void Init(ReactiveProperty<ScoreChangeData> changeScoreData)
         {
             _reasonDropdown.ClearOptions();
             _reasonDropdown.AddOptions(Reasons);
@@ -33,7 +33,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             
             _reasonDropdown.onValueChanged.AddListener(x =>
             {
-                changeScoreData.Value = new ChangeScoreData(changeScoreData.Value)
+                changeScoreData.Value = new ScoreChangeData(changeScoreData.Value)
                 {
                     Reason = (ChangeScoreReason) x
                 };
@@ -41,7 +41,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             
             _valueText.onValueChanged.AddListener(x =>
             {
-                changeScoreData.Value = new ChangeScoreData(changeScoreData.Value)
+                changeScoreData.Value = new ScoreChangeData(changeScoreData.Value)
                 {
                     Value = int.TryParse(x, out var result) ? result : 0
                 };
