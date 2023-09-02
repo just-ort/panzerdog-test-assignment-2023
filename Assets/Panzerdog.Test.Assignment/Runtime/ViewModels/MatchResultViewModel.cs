@@ -15,8 +15,8 @@ namespace Panzerdog.Test.Assignment.ViewModels
         public ReactiveProperty<ScoreAndLevelData> RatingSavedData { get; }
         public ReactiveProperty<ScoreAndLevelData> ExperienceSavedData { get; }
         public ReactiveProperty<MatchResult> MatchResult { get; }
-        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> RatingScoreChanges { get; } = new();
-        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> ExperienceScoreChanges { get; } = new();
+        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> RatingScoreChanges { get; }
+        public ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>> ExperienceScoreChanges { get; }
         
         public int CurrentExperienceThreshold => _experienceThresholds[ExperienceSavedData.Value.Level];
         public int CurrentRatingThreshold => _ratingThresholds[RatingSavedData.Value.Level];
@@ -28,24 +28,23 @@ namespace Panzerdog.Test.Assignment.ViewModels
             _ratingThresholds = ratingThresholds;
 
             RatingSavedData = new ReactiveProperty<ScoreAndLevelData>(matchController.SaveData.Rating);
-            RatingSavedData.Subscribe(x => matchController.SaveData = new SaveData(matchController.SaveData)
-            {
-                Rating = x
-            });
-            
             ExperienceSavedData = new ReactiveProperty<ScoreAndLevelData>(matchController.SaveData.Experience);
-            ExperienceSavedData.Subscribe(x => matchController.SaveData = new SaveData(matchController.SaveData)
-            {
-                Experience = x
-            });
-
             MatchResult = new ReactiveProperty<MatchResult>(matchController.MatchResult);
-            MatchResult.Subscribe(x =>
-            {
-                matchController.MatchResult = x;
-            });
+            RatingScoreChanges = new ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>>();
+            ExperienceScoreChanges = new ReactiveDictionary<ScoreChangeData, List<ScoreChangeStepData>>();
+            
+            Subscribe();
         }
-
+        
+        public void Dispose()
+        {
+            ExperienceScoreChanges.Dispose();
+            RatingScoreChanges.Dispose();
+            MatchResult.Dispose();
+            ExperienceSavedData.Dispose();
+            RatingSavedData.Dispose();
+        }
+        
         public void UpdateRatingSaveData()
         {
             var ratingStates = GetChangeScoreSteps(RatingSavedData, _matchController.RatingChangeData, _ratingThresholds);
@@ -62,6 +61,22 @@ namespace Panzerdog.Test.Assignment.ViewModels
             {
                 ExperienceScoreChanges.Add(experienceState.Key, experienceState.Value);
             }
+        }
+
+        private void Subscribe()
+        {
+            RatingSavedData.Subscribe(x => _matchController.SaveData = new SaveData(_matchController.SaveData)
+            {
+                Rating = x
+            });
+            ExperienceSavedData.Subscribe(x => _matchController.SaveData = new SaveData(_matchController.SaveData)
+            {
+                Experience = x
+            });
+            MatchResult.Subscribe(x =>
+            {
+                _matchController.MatchResult = x;
+            });
         }
         
         private static Dictionary<ScoreChangeData, List<ScoreChangeStepData>> GetChangeScoreSteps(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ScoreChangeData> scoreChanges, IReadOnlyList<int> scoreThresholds)

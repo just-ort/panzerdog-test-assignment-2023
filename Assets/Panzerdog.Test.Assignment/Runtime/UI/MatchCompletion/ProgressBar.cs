@@ -37,10 +37,10 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
             _currentValue = value;
             
             var duration = Mathf.Max(1, _fullBarFillDuration * _currentValue / _maxValue);
-            var fillTween = _bar.DOFillAmount((float) _currentValue / _maxValue, duration);
-            fillTween.onUpdate += UpdateText;
-
-            await fillTween.Play(ct).AsyncWaitForCompletion();
+            await _bar.DOFillAmount((float) _currentValue / _maxValue, duration)
+                .OnUpdate(UpdateText)
+                .Play(ct)
+                .AsyncWaitForCompletion();
             
             _text.SetText($"{_currentValue}/{_maxValue}");
             _currentValue = value;
