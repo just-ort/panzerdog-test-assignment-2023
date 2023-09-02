@@ -25,12 +25,12 @@ namespace Panzerdog.Test.Assignment
         private async Task ProcessMatch(CancellationToken ct)
         {
             var matchController = new MatchController();
-            
-            await _screenManager.Show<MatchResultMockScreen>(new MatchResultMockViewModel(matchController), CancellationToken.None);
 
-            await matchController.OnMatchCompleted.Task;
-            
-            await _screenManager.Hide<MatchResultMockScreen>(CancellationToken.None);
+            var matchResultMockViewModel = new MatchResultMockViewModel(matchController);
+            await _screenManager.Show<MatchResultMockScreen>(matchResultMockViewModel, ct);
+
+            await matchResultMockViewModel.OnMatchCompleted.Task;
+            await _screenManager.Hide<MatchResultMockScreen>(ct);
             
             await _screenManager.Show<MatchResultScreen>(new MatchResultViewModel(matchController, _scoreThresholds.ExperienceLevels, _scoreThresholds.RatingGrades), ct);
         }

@@ -1,60 +1,74 @@
-﻿using Panzerdog.Test.Assignment.Data;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Panzerdog.Test.Assignment.Data;
 using Panzerdog.Test.Assignment.Services;
 using Panzerdog.Test.Assignment.Types;
 using UniRx;
-using UnityEditor;
-using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.ViewModels
 {
     //TODO: dispose()
     public class MatchResultMockViewModel : IViewModel
     {
-        {
-            
-        }
+        public ReactiveProperty<SaveData> SaveData { get; }
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> RatingChangeData { get; }
+        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; }
+        public ReactiveProperty<MatchResult> MatchResult { get; }
 
-        private readonly MatchController _matchController;
-        
-        public ReactiveProperty<SaveData> SaveData { get; } = new(new SaveData());
-        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> RatingChangeData { get; } = new();
-        public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; } = new();
-        public ReactiveProperty<MatchResult> MatchResult { get; } = new();
-        
+        public TaskCompletionSource<bool> OnMatchCompleted { get; } = new();
+
         public MatchResultMockViewModel(MatchController matchController)
         {
-            _matchController = matchController;
+            SaveData = new ReactiveProperty<SaveData>(matchController.SaveData);
+            RatingChangeData = new ReactiveCollection<ReactiveProperty<ScoreChangeData>>(
+                matchController.RatingChangeData.Select(x => new ReactiveProperty<ScoreChangeData>(x)));
+            ExperienceChangeData = new ReactiveCollection<ReactiveProperty<ScoreChangeData>>(
+                matchController.ExperienceChangeData.Select(x => new ReactiveProperty<ScoreChangeData>(x)));
+            MatchResult = new ReactiveProperty<MatchResult>(matchController.MatchResult);
+            
+            Subscribe(matchController);
+        }
 
-            SaveData.Subscribe(x => _matchController.SaveData = new SaveData(x));
+        public void Dispose()
+        {
+            SaveData.Dispose();
+            RatingChangeData.Dispose();
+            ExperienceChangeData.Dispose();
+            MatchResult.Dispose();
+        }
+
+        public void CompleteMatch()
+        {
+            OnMatchCompleted.TrySetResult(true);
+        }
+
+        private void Subscribe(MatchController matchController)
+        {
+            SaveData.Subscribe(x => matchController.SaveData = new SaveData(x));
             
             RatingChangeData.ObserveAdd().Subscribe(x =>
             {
-                _matchController.RatingChangeData.Insert(x.Index, x.Value.Value);
-                x.Value.Subscribe(y => _matchController.RatingChangeData[x.Index] = new ScoreChangeData(y));
+                matchController.RatingChangeData.Insert(x.Index, x.Value.Value);
+                x.Value.Subscribe(y => matchController.RatingChangeData[x.Index] = new ScoreChangeData(y));
             });
             
             RatingChangeData.ObserveRemove().Subscribe(x =>
             {
-                _matchController.RatingChangeData.RemoveAt(x.Index);
+                matchController.RatingChangeData.RemoveAt(x.Index);
             });
 
             ExperienceChangeData.ObserveAdd().Subscribe(x =>
             {
-                _matchController.ExperienceChangeData.Insert(x.Index, x.Value.Value);
-                x.Value.Subscribe(y => _matchController.ExperienceChangeData[x.Index] = new ScoreChangeData(y));
+                matchController.ExperienceChangeData.Insert(x.Index, x.Value.Value);
+                x.Value.Subscribe(y => matchController.ExperienceChangeData[x.Index] = new ScoreChangeData(y));
             });
             
             ExperienceChangeData.ObserveRemove().Subscribe(x =>
             {
-                _matchController.ExperienceChangeData.RemoveAt(x.Index);
+                matchController.ExperienceChangeData.RemoveAt(x.Index);
             });
 
-            MatchResult.Subscribe(x => _matchController.MatchResult = x);
-        }
-        
-        public void CompleteMatch()
-        {
-            _matchController.CompleteMatch();
+            MatchResult.Subscribe(x => matchController.MatchResult = x);
         }
     }
 }
