@@ -10,31 +10,10 @@ namespace Panzerdog.Test.Assignment.ViewModels
     //TODO: dispose()
     public class MatchResultMockViewModel : IViewModel
     {
-        //TODO: удалить
-        private static MatchResultMockViewModel _instance;
-        
-        //TODO: удалить
-#if UNITY_EDITOR
-        [MenuItem("Test/Show DataMockViewModel")]
-        public static void ShowDataMockViewModel()
         {
-            Debug.Log($"[SaveData]: {_instance.SaveData}");
             
-            Debug.Log($"[RatingChangeData]:");
-            foreach (var reactiveProperty in _instance.RatingChangeData)
-            {
-                Debug.Log(reactiveProperty.Value);
-            }
-            
-            Debug.Log($"[ExperienceChangeData]: ");
-            foreach (var reactiveProperty in _instance.ExperienceChangeData)
-            {
-                Debug.Log(reactiveProperty.Value);
-            }
-            
-            Debug.Log($"[MatchResult]: {_instance.MatchResult}");
         }
-#endif
+
         private readonly MatchController _matchController;
         
         public ReactiveProperty<SaveData> SaveData { get; } = new(new SaveData());
@@ -44,7 +23,6 @@ namespace Panzerdog.Test.Assignment.ViewModels
         
         public MatchResultMockViewModel(MatchController matchController)
         {
-            _instance = this;
             _matchController = matchController;
 
             SaveData.Subscribe(x => _matchController.SaveData = new SaveData(x));
