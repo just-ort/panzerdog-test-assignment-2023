@@ -22,14 +22,11 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
         [SerializeField] private TMP_Dropdown _reasonDropdown;
         [SerializeField] private TMP_InputField _valueText;
 
-        private ReactiveProperty<ScoreChangeData> _changeScoreData;
         
         public void Init(ReactiveProperty<ScoreChangeData> changeScoreData)
         {
             _reasonDropdown.ClearOptions();
             _reasonDropdown.AddOptions(Reasons);
-
-            _changeScoreData = changeScoreData;
             
             _reasonDropdown.onValueChanged.AddListener(x =>
             {
@@ -57,21 +54,20 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             });
         }
 
+        public void Dispose()
+        {
+            _valueText.onSubmit.RemoveAllListeners();
+            _valueText.onDeselect.RemoveAllListeners();
+            _valueText.onValueChanged.RemoveAllListeners();
+            _reasonDropdown.onValueChanged.RemoveAllListeners();
+        }
+        
         private void ResetValueIfInvalid(string newValue)
         {
             if (!int.TryParse(newValue, out _))
             {
                 _valueText.text = Zero;
             }
-        }
-        
-        public void Dispose()
-        {
-            _changeScoreData.Dispose();
-            _valueText.onSubmit.RemoveAllListeners();
-            _valueText.onDeselect.RemoveAllListeners();
-            _valueText.onValueChanged.RemoveAllListeners();
-            _reasonDropdown.onValueChanged.RemoveAllListeners();
         }
     }
 }

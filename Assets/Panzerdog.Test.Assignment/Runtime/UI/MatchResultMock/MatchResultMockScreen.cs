@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Panzerdog.Test.Assignment.Attributes;
-using Panzerdog.Test.Assignment.Services;
 using Panzerdog.Test.Assignment.Types;
 using Panzerdog.Test.Assignment.ViewModels;
 using TMPro;
@@ -47,7 +46,9 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             _saveDataInitWidget.Dispose();
             
             _completeMatchButton.onClick.RemoveAllListeners();
-            DisposeMatchResultDropdown();
+            _matchResultDropdown.onValueChanged.RemoveAllListeners();
+            
+            _viewModel.Dispose();
         }
         
         private void InitMatchResultDropdown()
@@ -64,12 +65,6 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
             });
 
             matchResult.Subscribe(x => _matchResultDropdown.SetValueWithoutNotify((int) x));
-        }
-
-        private void DisposeMatchResultDropdown()
-        {
-            _viewModel.MatchResult.Dispose();
-            _matchResultDropdown.onValueChanged.RemoveAllListeners();
         }
     }
 }

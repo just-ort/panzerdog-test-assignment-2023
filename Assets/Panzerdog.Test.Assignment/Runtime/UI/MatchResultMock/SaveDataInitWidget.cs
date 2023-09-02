@@ -13,20 +13,38 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
         [SerializeField] private TMP_InputField _ratingScore;
         [SerializeField] private TMP_InputField _experienceLevel;
         [SerializeField] private TMP_InputField _experienceScore;
-
-        private ReactiveProperty<SaveData> _saveData;
         
         public void Init(ReactiveProperty<SaveData> saveData)
         {
-            _saveData = saveData;
-            
             var saveDataValue = saveData.Value;
             
-            _ratingLevel.SetTextWithoutNotify(saveDataValue.Rating.Level.ToString());
-            _ratingScore.SetTextWithoutNotify(saveDataValue.Rating.Score.ToString());
-            _experienceLevel.SetTextWithoutNotify(saveDataValue.Experience.Level.ToString());
-            _experienceScore.SetTextWithoutNotify(saveDataValue.Experience.Score.ToString());
+            ParseSaveData(saveDataValue);
 
+            AddInputListeners(saveData);
+
+            saveData.Subscribe(ParseSaveData);
+        }
+
+        public void Dispose()
+        {
+            _experienceScore.onValueChanged.RemoveAllListeners();
+            _experienceLevel.onValueChanged.RemoveAllListeners();
+            _ratingScore.onValueChanged.RemoveAllListeners();
+            _ratingLevel.onValueChanged.RemoveAllListeners();
+        }
+
+        private void ParseSaveData(SaveData saveData)
+        {
+            _ratingLevel.SetTextWithoutNotify(saveData.Rating.Level.ToString());
+            _ratingScore.SetTextWithoutNotify(saveData.Rating.Score.ToString());
+            _experienceLevel.SetTextWithoutNotify(saveData.Experience.Level.ToString());
+            _experienceScore.SetTextWithoutNotify(saveData.Experience.Score.ToString());
+        }
+        
+        private void AddInputListeners(ReactiveProperty<SaveData> saveData)
+        {
+            var saveDataValue = saveData.Value;
+            
             _ratingLevel.onValueChanged.AddListener(x =>
             {
                 var newRatingLevel = ValidateInputValue(x, _ratingLevel);
@@ -50,7 +68,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
                 saveDataValue.Rating = newRating;
                 saveData.Value = saveDataValue;
             });
-
+            
             _experienceLevel.onValueChanged.AddListener(x =>
             {
                 var newExperienceLevel = ValidateInputValue(x, _experienceLevel);
@@ -74,23 +92,6 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
                 saveDataValue.Experience = newExperience;
                 saveData.Value = saveDataValue;
             });
-
-            saveData.Subscribe(x =>
-            {
-                _ratingLevel.SetTextWithoutNotify(x.Rating.Level.ToString());
-                _ratingScore.SetTextWithoutNotify(x.Rating.Score.ToString());
-                _experienceLevel.SetTextWithoutNotify(x.Experience.Level.ToString());
-                _experienceScore.SetTextWithoutNotify(x.Experience.Score.ToString());
-            });
-        }
-
-        public void Dispose()
-        {
-            _saveData.Dispose();
-            _experienceScore.onValueChanged.RemoveAllListeners();
-            _experienceLevel.onValueChanged.RemoveAllListeners();
-            _ratingScore.onValueChanged.RemoveAllListeners();
-            _ratingLevel.onValueChanged.RemoveAllListeners();
         }
 
         private static int ValidateInputValue(string value, TMP_InputField input)

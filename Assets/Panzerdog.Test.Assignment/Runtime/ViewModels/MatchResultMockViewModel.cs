@@ -7,7 +7,6 @@ using UniRx;
 
 namespace Panzerdog.Test.Assignment.ViewModels
 {
-    //TODO: dispose()
     public class MatchResultMockViewModel : IViewModel
     {
         public ReactiveProperty<SaveData> SaveData { get; }
