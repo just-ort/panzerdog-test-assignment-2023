@@ -30,8 +30,7 @@ namespace Panzerdog.Test.Assignment
         {
             var matchController = new MatchController();
             
-            //TODO: разъезжается верстка
-            await _screenManager.Show<MatchResultMockScreen>(new DataMockViewModel(matchController), CancellationToken.None);
+            await _screenManager.Show<MatchResultMockScreen>(new MatchResultMockViewModel(matchController), CancellationToken.None);
 
             await matchController.OnMatchCompleted.Task;
             

@@ -8,10 +8,10 @@ using UnityEngine;
 namespace Panzerdog.Test.Assignment.ViewModels
 {
     //TODO: dispose()
-    public class DataMockViewModel : IViewModel
+    public class MatchResultMockViewModel : IViewModel
     {
         //TODO: удалить
-        private static DataMockViewModel _instance;
+        private static MatchResultMockViewModel _instance;
         
         //TODO: удалить
 #if UNITY_EDITOR
@@ -42,7 +42,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
         public ReactiveCollection<ReactiveProperty<ScoreChangeData>> ExperienceChangeData { get; } = new();
         public ReactiveProperty<MatchResult> MatchResult { get; } = new();
         
-        public DataMockViewModel(MatchController matchController)
+        public MatchResultMockViewModel(MatchController matchController)
         {
             _instance = this;
             _matchController = matchController;
