@@ -17,11 +17,8 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
         public void Init(ReactiveProperty<SaveData> saveData)
         {
             var saveDataValue = saveData.Value;
-            
             ParseSaveData(saveDataValue);
-
             AddInputListeners(saveData);
-
             saveData.Subscribe(ParseSaveData);
         }
 
