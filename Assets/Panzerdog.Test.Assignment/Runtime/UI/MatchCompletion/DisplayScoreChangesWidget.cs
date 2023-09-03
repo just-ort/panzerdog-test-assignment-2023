@@ -73,7 +73,7 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
                 _progressBar.Setup(state.CurrentScore, state.MaxScore);
                 _levelText.SetText(state.Level.ToString());
                 await _progressBar.SetValueAsync(state.NewScore, linkedCts.Token);
-                await Task.Delay(betweenProgressBarUpdatesDelay, linkedCts.Token).ContinueWith(EmptyMethod, linkedCts.Token);
+                await Task.Delay(betweenProgressBarUpdatesDelay, linkedCts.Token).ContinueWith(EmptyMethod);
             }
         }
 
