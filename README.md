@@ -10,4 +10,6 @@ When you setup match result data, press "Complete Match" button to see how the d
 
 ![image](https://github.com/just-ort/panzerdog-test-assignment-2023/assets/38862366/881a0b2e-3d64-4866-abff-02304bf694d7)
 
+Also you can skip animations of active widget just clicking somewhere on a screen.
+
 If you want to change match result data, you must to restart the app and setup new data.
