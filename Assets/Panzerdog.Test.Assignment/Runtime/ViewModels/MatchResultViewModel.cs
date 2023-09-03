@@ -73,10 +73,7 @@ namespace Panzerdog.Test.Assignment.ViewModels
             {
                 Experience = x
             });
-            MatchResult.Subscribe(x =>
-            {
-                _matchController.MatchResult = x;
-            });
+            MatchResult.Subscribe(x => _matchController.MatchResult = x);
         }
         
         private static Dictionary<ScoreChangeData, List<ScoreChangeStepData>> GetChangeScoreSteps(ReactiveProperty<ScoreAndLevelData> saveDataProperty, IReadOnlyList<ScoreChangeData> scoreChanges, IReadOnlyList<int> scoreThresholds)
