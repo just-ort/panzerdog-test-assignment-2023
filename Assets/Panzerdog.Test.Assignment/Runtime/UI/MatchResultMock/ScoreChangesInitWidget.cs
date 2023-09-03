@@ -8,13 +8,13 @@ namespace Panzerdog.Test.Assignment.UI.MatchResultMock
     {
         [SerializeField] private EnterScoreChangeWidget[] _enterChangeScoreValueWidget;
 
-        public void Init(ReactiveCollection<ReactiveProperty<ScoreChangeData>> changeScoreDatas)
+        public void Init(ReactiveCollection<ReactiveProperty<ScoreChangeData>> scoreChanges)
         {
             foreach (var widget in _enterChangeScoreValueWidget)
             {
-                var changeScoreData = new ReactiveProperty<ScoreChangeData>();
-                changeScoreDatas.Add(changeScoreData);
-                widget.Init(changeScoreData);
+                var scoreChangeData = new ReactiveProperty<ScoreChangeData>();
+                scoreChanges.Add(scoreChangeData);
+                widget.Init(scoreChangeData);
             }
         }
 
