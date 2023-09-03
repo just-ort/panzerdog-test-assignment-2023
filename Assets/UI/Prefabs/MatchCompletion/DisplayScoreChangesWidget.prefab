@@ -447,10 +447,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2044083162473616906}
+  _fadeDuration: 1
   _changesContainer: {fileID: 6302725315315930435}
   _progressBar: {fileID: 6302725314874489882}
   _levelText: {fileID: 656162806787492833}
-  displayScoreChangeWidgetPrefab: {fileID: 980904053627117055, guid: 6da7ad05bd12bb54f860ac1927af8674, type: 3}
+  _displayScoreChangeWidgetPrefab: {fileID: 980904053627117055, guid: 6da7ad05bd12bb54f860ac1927af8674, type: 3}
 --- !u!225 &2044083162473616906
 CanvasGroup:
   m_ObjectHideFlags: 0

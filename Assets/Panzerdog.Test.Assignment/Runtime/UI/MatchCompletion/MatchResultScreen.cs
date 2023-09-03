@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Panzerdog.Test.Assignment.Attributes;
 using Panzerdog.Test.Assignment.Utils;
@@ -52,19 +53,19 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
             _viewModel.Dispose();
         }
 
-        protected override async Task OnShow()
+        protected override async Task OnShow(CancellationToken ct)
         {
-            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_ratingWidget));
+            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_ratingWidget, ct));
             _viewModel.UpdateRatingSaveData();
 
-            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_experienceWidget));
+            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_experienceWidget, ct));
             _viewModel.UpdateExperienceSaveData();
         }
 
-        private Task ShowDisplayScoreChangesWidget(DisplayScoreChangesWidget widget)
+        private Task ShowDisplayScoreChangesWidget(DisplayScoreChangesWidget widget, CancellationToken ct)
         {
             _lastShownWidget = widget;
-            return widget.Show();
+            return widget.Show(ct);
         } 
     }
 }

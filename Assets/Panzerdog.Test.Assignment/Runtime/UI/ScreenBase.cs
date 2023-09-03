@@ -19,12 +19,12 @@ namespace Panzerdog.Test.Assignment.UI
             _canvasGroup.alpha = 0;
             gameObject.SetActive(true);
             await _canvasGroup.DOFade(1f, _fadeDuration).Play(ct).AsyncWaitForCompletion();
-            await OnShow();
+            await OnShow(ct);
         }
         
         public async Task Hide(CancellationToken ct)
         {
-            await OnHide();
+            await OnHide(ct);
             await _canvasGroup.DOFade(0f, _fadeDuration).Play(ct).AsyncWaitForCompletion();
             Dispose();
             gameObject.SetActive(false);
@@ -34,12 +34,12 @@ namespace Panzerdog.Test.Assignment.UI
         
         protected abstract void Dispose();
 
-        protected virtual Task OnShow()
+        protected virtual Task OnShow(CancellationToken ct)
         {
             return Task.CompletedTask;
         }
         
-        protected virtual Task OnHide()
+        protected virtual Task OnHide(CancellationToken ct)
         {
             return Task.CompletedTask;
         }
