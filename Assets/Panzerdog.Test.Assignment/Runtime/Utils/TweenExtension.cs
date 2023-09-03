@@ -7,11 +7,10 @@ namespace Panzerdog.Test.Assignment.Utils
     {
         public static Tween Play(this Tween tween, CancellationToken ct)
         {
-            tween.SetCancellationToken(ct);
-            return tween.Play();
+            return tween.SetCancellationToken(ct).Play();
         }
         
-        public static Tween SetCancellationToken(this Tween tween, CancellationToken ct)
+        public static Tween SetCancellationToken(this Tween tween, CancellationToken ct, bool completeWhenCanceled = true)
         {
             tween.onUpdate += CheckCancellation;
             
@@ -19,7 +18,7 @@ namespace Panzerdog.Test.Assignment.Utils
             {
                 if (ct.IsCancellationRequested)
                 {
-                    tween.Kill(true);
+                    tween.Kill(completeWhenCanceled);
                 }
             }
 
