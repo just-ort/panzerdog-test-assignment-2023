@@ -20,18 +20,5 @@ namespace Panzerdog.Test.Assignment.Utils
                 _semaphore.Release();
             }
         }
-        
-        public async Task<T> Enqueue<T>(Func<Task<T>> taskGenerator)
-        {
-            await _semaphore.WaitAsync();
-            try
-            {
-                return await taskGenerator();
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
-        }
     }
 }
