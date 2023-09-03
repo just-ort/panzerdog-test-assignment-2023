@@ -4,6 +4,7 @@ using Panzerdog.Test.Assignment.Data;
 using Panzerdog.Test.Assignment.Services;
 using Panzerdog.Test.Assignment.Types;
 using UniRx;
+using UnityEngine;
 
 namespace Panzerdog.Test.Assignment.ViewModels
 {
@@ -38,6 +39,13 @@ namespace Panzerdog.Test.Assignment.ViewModels
 
         public void CompleteMatch()
         {
+            if (RatingChangeData.All(x => x.Value.Value == 0)
+                || ExperienceChangeData.All(x => x.Value.Value == 0))
+            {
+                Debug.Log("Set match results to complete it.");
+                return;
+            }
+
             OnMatchCompleted.TrySetResult(true);
         }
 
