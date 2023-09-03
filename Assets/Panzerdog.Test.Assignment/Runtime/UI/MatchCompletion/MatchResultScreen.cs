@@ -54,21 +54,17 @@ namespace Panzerdog.Test.Assignment.UI.MatchCompletion
 
         protected override async Task OnShow()
         {
-            await _taskQueue.Enqueue(() =>
-            {
-                _lastShownWidget = _ratingWidget;
-                return _ratingWidget.Show();
-            });
-            
+            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_ratingWidget));
             _viewModel.UpdateRatingSaveData();
 
-            await _taskQueue.Enqueue(() =>
-            {
-                _lastShownWidget = _experienceWidget;    
-                return _experienceWidget.Show();
-            });
-            
+            await _taskQueue.Enqueue(() => ShowDisplayScoreChangesWidget(_experienceWidget));
             _viewModel.UpdateExperienceSaveData();
         }
+
+        private Task ShowDisplayScoreChangesWidget(DisplayScoreChangesWidget widget)
+        {
+            _lastShownWidget = widget;
+            return widget.Show();
+        } 
     }
 }
